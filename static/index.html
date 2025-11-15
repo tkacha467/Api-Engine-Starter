@@ -1,0 +1,56 @@
+<!-- static/index.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>API Engine Starter — Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 24px; }
+    label { display:block; margin:8px 0; }
+    input { padding:6px; width:140px; }
+    button { padding:8px 12px; margin-top:8px; }
+    pre { background:#f4f4f4; padding:12px; }
+  </style>
+</head>
+<body>
+  <h1>API Engine Starter — Demo</h1>
+
+  <h3>Tabular predict</h3>
+  <label>x1: <input id="x1" type="number" value="5"></label>
+  <label>x2: <input id="x2" type="number" value="50"></label>
+  <button onclick="predict()">Predict</button>
+  <pre id="out1">Result will appear here</pre>
+
+  <h3>Upload image</h3>
+  <input id="imgfile" type="file" accept="image/*" />
+  <button onclick="uploadImage()">Upload & Predict</button>
+  <pre id="out2">Image result appears here</pre>
+
+<script>
+async function predict() {
+  const x1 = parseFloat(document.getElementById('x1').value);
+  const x2 = parseFloat(document.getElementById('x2').value);
+  const res = await fetch('/predict', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({x1, x2})
+  });
+  const j = await res.json();
+  document.getElementById('out1').innerText = JSON.stringify(j, null, 2);
+}
+
+async function uploadImage(){
+  const inp = document.getElementById('imgfile');
+  if(!inp.files.length){ alert('Choose file first'); return; }
+  const form = new FormData();
+  form.append('file', inp.files[0]);
+  const res = await fetch('/upload-image', {
+    method: 'POST',
+    body: form
+  });
+  const j = await res.json();
+  document.getElementById('out2').innerText = JSON.stringify(j, null, 2);
+}
+</script>
+</body>
+</html>
