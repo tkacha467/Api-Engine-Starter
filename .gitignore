@@ -16,3 +16,19 @@ ml/__pycache__/
 
 # macOS
 .DS_Store
+
+# Virtual environments
+.venv/
+.venv-1/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Models
+ml/model.pkl
+
+# System files
+.DS_Store
+Thumbs.db
